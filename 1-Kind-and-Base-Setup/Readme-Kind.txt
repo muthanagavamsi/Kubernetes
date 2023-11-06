@@ -38,3 +38,5 @@ apt-get install vim
 #---------------
 docker run -it -v ${PWD}:/work -w /work alpine sh
 #----------------
+
+git push origin master
