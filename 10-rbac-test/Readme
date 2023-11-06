@@ -1,0 +1,21 @@
+Install yq
+
+-----
+
+Using this link.
+
+https://medium.com/@lionelvillard/creating-users-in-kind-cluster-6c5ee35db3fe
+
+
+winget install --id MikeFarah.yq
+
+kind get kubeconfig --name my-cluster | yq e '.users[0].user.client-certificate-data' - | base64 -d > kind.csr 
+
+kubectl get clusterrolebindings.rbac.authorization.k8s.io cluster-admin -n kube-system -oyaml
+
+docker cp my-cluster-control-plane:/etc/kubernetes/pki/ca.crt .
+
+docker cp my-cluster-control-plane:/etc/kubernetes/pki/ca.key .
+
+openssl genrsa -out user1.key 2048  
+

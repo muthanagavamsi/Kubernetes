@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  restartPolicy: OnFailure
+  initContainers:
+  - name: sc1
+    restartPolicy: Always
+    image: alpine:3
+    command: [ "sh", "-c", "sleep 10 && exit 1" ]    
+  containers:
+  - name: rc1
+    image: alpine:3
+    command: [ "sh", "-c", "sleep 180" ]
+    startupProbe:
+      exec:
+        command: ["/bin/sh", "-c", "sleep 5"]
+      initialDelaySeconds: 0
+      periodSeconds: 30
+      timeoutSeconds: 999
+    readinessProbe:
+      exec:
+        command: ["/bin/sh", "-c", "sleep 5"]
+      initialDelaySeconds: 0
+      periodSeconds: 30
+      timeoutSeconds: 999

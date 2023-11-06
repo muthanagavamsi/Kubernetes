@@ -1,0 +1,31 @@
+kubectl.exe apply -f deployment.yaml
+k expose deploy/kitchen --type=LoadBalancer --port 80
+
+Used the following url to wget metal lb yaml
+
+https://kind.sigs.k8s.io/docs/user/loadbalancer/
+
+https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
+
+k apply -f metallb-native.yaml
+
+kubectl wait --namespace metallb-system \
+                --for=condition=ready pod \
+                --selector=app=metallb \
+                --timeout=90s
+
+ docker network inspect -f '{{.IPAM.Config}}' kind
+[{172.18.0.0/16  172.18.0.1 map[]} {fc00:f853:ccd:e793::/64  fc00:f853:ccd:e793::1 map[]}]
+
+Select 172.18.255.100 to 172.18.255.110 ip range for metal lb.
+
+Create metal-cm.yaml and paste config from 
+
+https://4n6nk8s.github.io/2022/09/09/Kubernetes/nginx-ingress/
+
+Now, add following ip range. 
+
+172.18.255.100-172.18.255.110
+
+ kubectl.exe apply -f metal-cm.yaml
+configmap/config created

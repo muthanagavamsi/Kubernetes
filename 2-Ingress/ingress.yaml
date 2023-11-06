@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /green-nginx
+        pathType: Prefix
+        backend:
+          service:
+            name: green-nginx
+            port:
+              number: 80
+      - path: /blue-httpd
+        pathType: Prefix
+        backend:
+          service:
+            name: blue-httpd
+            port:
+              number: 80

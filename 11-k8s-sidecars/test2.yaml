@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  restartPolicy: OnFailure
+  initContainers:
+  - name: ic1
+    image: alpine:3
+    command: [ "sh", "-c", "sleep 5" ]
+  - name: sc1
+    restartPolicy: Always
+    image: alpine:3
+    command: [ "sh", "-c", "sleep 20 && exit 1" ]
+  - name: ic2
+    image: alpine:3
+    command: [ "sh", "-c", "sleep 5" ]
+  - name: sc2
+    restartPolicy: Always
+    image: alpine:3
+    command: [ "sh", "-c", "while true; do sleep 1; done" ]
+    startupProbe:
+      exec:
+        command: ["/bin/sh", "-c", "sleep 5"]
+      initialDelaySeconds: 0
+      timeoutSeconds: 999
+    readinessProbe:
+      exec:
+        command: ["/bin/sh", "-c", "sleep 5"]
+      initialDelaySeconds: 0
+      timeoutSeconds: 999
+  containers:
+  - name: rc1
+    image: alpine:3
+    command: [ "sh", "-c", "sleep 55" ]
+    startupProbe:
+      exec:
+        command: ["/bin/sh", "-c", "sleep 5"]
+      initialDelaySeconds: 0
+      periodSeconds: 30
+      timeoutSeconds: 999
+    readinessProbe:
+      exec:
+        command: ["/bin/sh", "-c", "sleep 5"]
+      initialDelaySeconds: 0
+      periodSeconds: 30
+      timeoutSeconds: 999
+  - name: rc2
+    image: alpine:3
+    command: [ "sh", "-c", "sleep 60" ]
+    startupProbe:
+      exec:
+        command: ["/bin/sh", "-c", "sleep 5"]
+      initialDelaySeconds: 0
+      periodSeconds: 30
+      timeoutSeconds: 999
+    readinessProbe:
+      exec:
+        command: ["/bin/sh", "-c", "sleep 5"]
+      initialDelaySeconds: 0
+      periodSeconds: 30
+      timeoutSeconds: 999

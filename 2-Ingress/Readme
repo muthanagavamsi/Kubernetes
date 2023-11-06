@@ -1,0 +1,12 @@
+# Get the pod's IP address
+POD_IP=$(kubectl get pod alpine-pod -o jsonpath='{.status.podIP}')
+
+# Get a shell into the pod
+kubectl exec -it alpine-pod -- /bin/sh
+
+# Test the NGINX web server
+curl http://$POD_IP
+
+------------
+
+kubectl delete -f alpine.yaml

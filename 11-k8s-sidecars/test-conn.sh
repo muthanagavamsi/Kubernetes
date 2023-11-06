@@ -1,0 +1,1 @@
+kubectl exec -it example-pod -c rc1 -n test -- /bin/sh -c "hostname"

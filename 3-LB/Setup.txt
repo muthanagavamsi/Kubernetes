@@ -1,0 +1,85 @@
+kubectl apply -f nginx-deployment.yaml
+
+kubectl get pods
+kubectl get deployments
+kubectl get svc
+
+
+kubectl expose deployment nginx-deployment
+kubectl get svc
+kubectl describe svc nginx-deployment
+#kubectl port-forward svc/nginx-deployment 80
+
+#Access nginx from brave via localhost
+
+#logs of 2 nginx pods.
+kubectl get pods -l app=nginx
+kubectl logs nginx-deployment-57d84f57dc-8b26s --tail=10 -f 
+kubectl logs nginx-deployment-57d84f57dc-b5r5t --tail=10 -f 
+
+#You can get into the pods using this
+kubectl.exe exec -it nginx-deployment-57d84f57dc-b5r5t -- bash
+
+kubectl delete pod nginx-deployment-57d84f57dc-nbwdk
+
+#Loadbalancing doesn't work port-forward so, trying to setup ingress.
+
+#setup ingress.
+kubectl apply -f ingress.yaml
+
+kubectl port-forward -n default service/nginx-deployment 8080:80
+
+kubectl port-forward svc/nginx 8080:80
+
+#Login into control-plane using docker.
+docker exec -it my-cluster-control-plane bash
+
+#login to bash if its installed in control plane
+bash
+
+#Iptables check for nginx-service.
+iptables -t nat -L KUBE-SERVICES
+iptables -t nat -L KUBE-SVC-WRNOD73BKRQH4VVX
+
+#Open the logs of 2 pods
+
+#Run following script on the control plane and check logs from all pods.
+
+docker exec -it my-cluster-control-plane bash
+
+for i in {1..100}; do
+  curl 10.96.200.172:80
+  sleep 1
+done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------
+docker run -it -v ${PWD}:/work -w /work alpine sh
+apk add git
+----------------
+
+----------
+
+kubectl apply -f alpine-pod.yaml
+
+kubectl get pod alpine-pod -o jsonpath='{.status.podIP}'
+
+kubectl exec -it alpine-pod -- /bin/sh
+
+
+
+-------

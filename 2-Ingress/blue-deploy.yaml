@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blue-httpd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blue-httpd
+  template:
+    metadata:
+      labels:
+        app: blue-httpd
+    spec:
+      containers:
+      - name: httpd
+        image: httpd:latest
+        ports:
+        - containerPort: 80

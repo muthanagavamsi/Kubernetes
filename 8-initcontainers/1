@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-demo
+spec:
+  containers:
+  - name: main-container
+    image: busybox
+    command: ['sh', '-c', 'cat /data/hello.txt && sleep 3600']
+    volumeMounts:
+    - mountPath: /data
+      name: data-volume
+  initContainers:
+  - name: init-container
+    image: busybox
+    command: ['sh', '-c', 'wget -O /data/hello.txt https://example.com/hello.txt']
+    volumeMounts:
+    - mountPath: /data
+      name: data-volume
+  volumes:
+  - name: data-volume
+    emptyDir: {}
+
