@@ -1,0 +1,31 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaNodePool
+metadata:
+  name: dual-role
+  namespace: strimzi
+  labels:
+    strimzi.io/cluster: my-cluster
+spec:
+  replicas: 3
+  roles: # (1)
+    - controller
+    - broker
+  storage: # (2)
+    type: jbod
+    volumes:
+      - id: 0
+        type: persistent-claim
+        size: 20Gi
+        deleteClaim: false
+  template:
+    pod:
+      affinity:
+        podAntiAffinity: # (3)
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: strimzi.io/name
+                    operator: In
+                    values:
+                      - my-cluster-kafka
+                topologyKey: "kubernetes.io/hostname" # (4)

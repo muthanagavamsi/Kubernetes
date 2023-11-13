@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webapp-pod
+spec:
+  initContainers:
+  - name: config-init
+    image: busybox
+    command: ["sh", "-c", "echo 'It's a beautiful day. SMILE (̶◉͛‿◉̶)  ∞ ♡' > /app/config.txt"]
+    volumeMounts:
+    - name: app-config
+      mountPath: /app
+  containers:
+  - name: webapp
+    image: nginx
+    volumeMounts:
+    - name: app-config
+      mountPath: /usr/share/nginx/html/config
+  volumes:
+  - name: app-config
+    emptyDir: {}

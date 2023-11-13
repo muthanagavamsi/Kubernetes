@@ -3,10 +3,8 @@ alias kgp='kubectl get pods -o wide'
 alias kgd='kubectl get deployments'
 alias kgs='kubectl get services'
 alias kgn='kubectl get nodes'
-alias kaf='kubectl apply -f'
-alias kdp='k describe pod'
-alias kdelp='k delete pod'
 
+---------
 
 Hi. Let's learn Kubernetes.
 
@@ -34,6 +32,7 @@ apt-get install telent
 apt-get install net-tools
 apt-get install bash
 apt-get install vim
+
 #-----------------
 
 #--> If required - Set up local apine container. Specific to project.
@@ -41,5 +40,3 @@ apt-get install vim
 #---------------
 docker run -it -v ${PWD}:/work -w /work alpine sh
 #----------------
-
-git push origin master
