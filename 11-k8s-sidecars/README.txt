@@ -19,3 +19,6 @@ kubectl exec -it example-pod -c rc1 -n test -- /bin/sh -c "echo vamsi"
 
 ------
 
+for i in {1..100}; do echo $i; done
+
+

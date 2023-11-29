@@ -6,7 +6,7 @@ spec:
   restartPolicy: OnFailure
   initContainers:
   - name: sc1
-    restartPolicy: Always
+    #restartPolicy: Always
     image: alpine:3
     command: [ "sh", "-c", "sleep 10 && exit 1" ]    
   containers:
