@@ -9,3 +9,4 @@ nodes:
 # the three workers
 - role: worker
 - role: worker
+- role: worker
