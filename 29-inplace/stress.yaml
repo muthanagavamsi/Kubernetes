@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cpu-stressor
+spec:
+  template:
+    spec:
+      containers:
+      - name: stressor
+        image: narmidm/k8s-pod-cpu-stressor:latest
+        args: ["-cpu=0.9", "-duration=1m"]
+        resources:
+          limits:
+            cpu: "500m"
+      restartPolicy: Never

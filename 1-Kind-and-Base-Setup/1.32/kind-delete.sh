@@ -1,0 +1,1 @@
+kind delete clusters my-cluster

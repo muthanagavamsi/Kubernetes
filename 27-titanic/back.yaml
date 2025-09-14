@@ -1,0 +1,42 @@
+# backend.yml, part I, backend app
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: titanic
+  name: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: sassy19a/titanic-backend
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: model_url
+              value: http://model-svc.titanic.svc.cluster.local:8081
+            - name: DB_HOST 
+              value: database-svc.titanic.svc.cluster.local
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: password
+            - name: DB_NAME
+              value: titanic_db

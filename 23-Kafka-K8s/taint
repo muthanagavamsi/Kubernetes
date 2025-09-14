@@ -1,0 +1,1 @@
+kubectl taint nodes my-cluster-worker4 reserved=true:NoSchedule

@@ -1,0 +1,33 @@
+Mastering kubernetes with network troubleshooting tutorial
+
+After starting kind cluster.
+
+kubectl apply -f delay.yaml
+
+then get into master node.
+
+docker exec -it my-cluster-control-plane bash
+
+#Install ping, telnet, ifconfig, bash, vim
+#apt-cache search iputils-ping
+apt update
+apt-get install tcpdump
+apt-get install curl
+
+have 2 different master node terminals.
+
+terminal 1. (replace host)
+
+curl -i http://10.244.2.4/sleep/10
+
+terminal 2. (replace host)
+
+tcpdump -i eth0 host 10.244.2.4
+
+to capture.
+
+tcpdump -i eth0 host 10.244.2.4 -w capture.pcap
+
+ship to windows.
+
+docker cp <cotnainerid>:/capture.pcap .

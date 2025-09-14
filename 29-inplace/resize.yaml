@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resize-test
+spec:
+  containers:
+  - name: app
+    image: kennethreitz/httpbin
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "100Mi"
+      limits:
+        cpu: "100m"
+        memory: "100Mi"
+    resizePolicy:
+    - resourceName: cpu
+      restartPolicy: NotRequired

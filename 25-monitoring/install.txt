@@ -1,0 +1,55 @@
+Install cert-manager.
+
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml
+
+kubectl get pods --namespace cert-manager
+
+#Install Jeager
+
+kubectl create namespace observability
+
+kubectl create -f https://github.com/jaegertracing/jaeger-operator/releases/download/v1.44.0/jaeger-operator.yaml -n observability
+
+kubectl apply -f jeager-instance.yaml
+
+kubectl port-forward service/jaeger-query 16686:16686 -n observability
+
+#Install open-telemetry operator.
+
+kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
+
+k get pods -n opentelemetry-operator-system
+
+#OpenTelemetryCollector
+
+k apply -f otelcol.yaml
+
+k apply -f instrumentation.yaml
+
+---
+
+Clone app code.
+
+git clone https://github.com/dockersamples/example-voting-app.git
+
+#Make changes to intrumentation in deployment configs.
+
+Based on this doc.
+
+https://fenyuk.medium.com/kubernetes-observability-with-opentelemetry-and-jaeger-8e072b7a4846
+
+kubectl create -f k8s-specifications/
+
+#make sure all pods are up.
+
+k get pods -w
+
+#do the voting here.
+
+kubectl port-forward service/vote 8080:8080
+
+#check the jeager.
+
+#do the port forward for vote.
+
+kubectl port-forward service/result 8081:8081

@@ -1,0 +1,3 @@
+kubectl exec -it kafka-0 -n kafka -- bash
+kafka-topics.sh --create --topic my-topic --bootstrap-server kafka-svc:9092
+kafka-topics.sh --list --topic my-topic --bootstrap-server kafka-svc:9092

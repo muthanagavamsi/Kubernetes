@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resize-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: resize-test
+  template:
+    metadata:
+      labels:
+        app: resize-test
+    spec:
+      containers:
+      - name: app
+        image: kennethreitz/httpbin
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+          limits:
+            cpu: "100m"
+            memory: "100Mi"
+        resizePolicy:
+        - resourceName: cpu
+          restartPolicy: NotRequired

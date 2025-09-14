@@ -1,0 +1,4 @@
+kubectl exec -it kafka-2 -n kafka -- bash
+kafka-console-consumer.sh --bootstrap-server kafka-svc:9092 --topic my-topic
+#readfrom start
+kafka-console-consumer.sh --bootstrap-server kafka-svc:9092 --topic my-topic --from-beginning

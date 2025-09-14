@@ -1,0 +1,55 @@
+bash kind-create.sh
+kubectl taint nodes my-cluster-worker4 reserved=true:NoSchedule
+kubectl taint nodes my-cluster-worker5 reserved=true:NoSchedule
+k apply -f kafka.yml
+--run to check
+kubectl logs kafka-0 -n kafka | grep STARTED
+kubectl logs kafka-1 -n kafka | grep STARTED
+kubectl logs kafka-2 -n kafka | grep STARTED
+-- connect to kafka-0
+kubectl exec -it kafka-0 -n kafka -- bash
+kafka-topics.sh --create --topic my-topic --bootstrap-server kafka-svc:9092
+kafka-topics.sh --list --topic my-topic --bootstrap-server kafka-svc:9092
+kubectl exec -it kafka-1 -n kafka -- bash
+kafka-console-producer.sh  --bootstrap-server kafka-svc:9092 --topic my-topic
+kafka-console-consumer.sh --bootstrap-server kafka-svc:9092 --topic my-topic
+
+kubectl drain my-cluster-worker  \
+  --delete-emptydir-data \
+  --force \
+  --ignore-daemonsets
+
+kubectl exec -it kafka-1 -n kafka -- bash
+kafka-topics.sh --describe --topic my-topic --bootstrap-server kafka-svc:9092
+
+#delete leader pod and see if leader is changed.
+
+kubectl exec -it kafka-1 -n kafka -- bash
+kafka-topics.sh --describe --topic my-topic --bootstrap-server kafka-svc:9092
+
+drain the node where leader exist.
+
+kubectl drain my-cluster-worker --delete-emptydir-data --force --ignore-daemonsets
+
+#check the pods. check leader.
+kubectl exec -it kafka-1 -n kafka -- bash
+kafka-topics.sh --describe --topic my-topic --bootstrap-server kafka-svc:9092
+
+#check data is sent.
+kafka-console-producer.sh  --bootstrap-server kafka-svc:9092 --topic my-topic
+kafka-console-consumer.sh --bootstrap-server kafka-svc:9092 --topic my-topic
+
+#uncordon and see if pod comes.
+kubectl uncordon my-cluster-worker
+
+----
+#drain 2 worker nodes. check status.
+#now remove tains.
+kubectl taint nodes my-cluster-worker4 reserved-
+kubectl taint nodes my-cluster-worker5 reserved-
+
+
+#read from all topic data.
+
+kafka-console-consumer.sh --bootstrap-server kafka-svc:9092 --topic my-topic --from-beginning
+  

@@ -1,0 +1,78 @@
+for i in {1..100000}; do   curl 10.96.219.219; done
+
+Download Istio from https://github.com/istio/istio/releases
+
+I am getting this one.
+
+---
+
+getting into control plane docker.
+
+docker exec -it my-cluster-control-plane bash
+
+apt-get install wget vim tshark
+
+wget https://github.com/istio/istio/releases/download/1.23.0/istio-1.23.0-linux-amd64.tar.gz
+
+tar xzf istio-1.23.0-linux-amd64.tar.gz 
+
+cd ./istio-1.23.0
+
+export PATH=$PWD/bin:$PATH
+
+which istioctl
+
+istioctl install
+
+kubectl get pods -n istio-system
+
+kubectl label namespace default istio-injection=enabled
+
+get back into /d/Vamsi/3-Tech-Projects/Kubernetes/19-istio/app
+
+You have these
+
+$ ls -lrth
+total 4.0K
+-rw-r--r-- 1 Vamsi 197121 311 Aug 24 03:11 deployment1.yaml
+-rw-r--r-- 1 Vamsi 197121 149 Aug 24 03:12 service1.yaml
+-rw-r--r-- 1 Vamsi 197121 306 Aug 24 03:12 deployment2.yaml
+-rw-r--r-- 1 Vamsi 197121 149 Aug 24 03:12 service2.yaml
+
+---
+
+k apply -f deployment1.yaml 
+k apply -f deployment2.yaml 
+
+k apply -f service1.yaml 
+k apply -f service2.yaml 
+
+docker exec -it my-cluster-control-plane bash
+
+root@my-cluster-control-plane:/# kubectl get svc
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP   48m
+service1     ClusterIP   10.96.219.219   <none>        80/TCP    5m7s
+service2     ClusterIP   10.96.221.133   <none>        80/TCP    31s
+
+curl 10.96.219.219
+
+curl 10.96.221.133
+
+---
+
+Change Istio gateway to cluster ip. edit and change at botton - type: ClusterIP
+
+kubectl edit svc istio-ingressgateway -n istio-system
+
+Check changes here. 
+
+kubectl get svc -n istio-system
+
+---
+
+for i in {1..100}; do
+  curl 10.96.219.219
+done
+
+

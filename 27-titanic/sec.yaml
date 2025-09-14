@@ -1,0 +1,14 @@
+# secret.yml
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: database-secret
+  namespace: titanic
+type: Opaque
+data:
+  username: cm9vdA==
+  password: cm9vdHBhc3N3b3Jk
+
+# convert to base64
+# e.g., echo -n 'admin' | base64

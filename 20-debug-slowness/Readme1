@@ -1,0 +1,19 @@
+kubectl get nodes
+kubectl describe node my-cluster-control-plane | grep IP
+
+SSSSS
+
+kubectl apply -f app.yaml
+docker exec -it my-cluster-control-plane bash
+
+SSSSS
+
+#Install ping, telnet, ifconfig, bash, vim
+#apt-cache search iputils-ping
+apt update
+apt-get install tcpdump
+apt-get install curl
+
+SSSSSS
+
+docker cp <cotnainerid>:/capture.pcap .

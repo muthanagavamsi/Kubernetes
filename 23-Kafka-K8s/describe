@@ -1,0 +1,8 @@
+kafka-topics.sh --describe --topic my-topic --bootstrap-server kafka-svc:9092
+
+kubectl drain my-cluster-worker  \
+  --delete-emptydir-data \
+  --force \
+  --ignore-daemonsets
+
+kubectl uncordon my-cluster-worker

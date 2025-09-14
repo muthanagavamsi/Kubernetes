@@ -1,0 +1,2 @@
+kubectl exec -it kafka-1 -n kafka -- bash
+kafka-console-producer.sh  --bootstrap-server kafka-svc:9092 --topic my-topic
